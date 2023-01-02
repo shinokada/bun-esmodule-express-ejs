@@ -1,7 +1,9 @@
 import passport from 'passport'
-require('./strategies/local.strategy.js')();
+import localStrategy from './strategies/local.strategy.js'
 
-exports function passportConfig (app) {
+localStrategy()
+
+export function passportConfig (app) {
   app.use(passport.initialize());
   app.use(passport.session());
 
