@@ -4,10 +4,16 @@ import Debug from 'debug'
 import morgan from 'morgan'
 import path from 'path'
 import { fileURLToPath } from 'url';
+import passport from 'passport'
+import cookieParser from 'cookie-parser'
+import session from 'express-session'
+import passportConfig from './src/config/passport.js'
+
 
 const app = express()
 const debug = Debug('app')
 const PORT = process.env.PORT || 3000;
+const secret = process.env.SECRET
 
 import { articlesRouter } from './src/routers/articlesRouter.js'
 import { adminRouter } from './src/routers/adminRouter.js'
@@ -33,7 +39,10 @@ app.use(express.urlencoded({ extended: false }))
 app.use('/articles', articlesRouter)
 app.use('/admin', adminRouter)
 app.use('/auth', authRouter)
-
+app.use(cookieParser())
+app.use(session({ secret }))
+// after cookieParser and session
+passportConfig(app)
 
 app.get('/', (req, res) => {
   res.render('index', { title: 'Bun, EJS and ExpressJS', data: ['a', 'b', 'c'] })
