@@ -130,7 +130,11 @@
           <div class="content-right col-md-4">
             <h3>FUTURE</h3><span>CONFERENCE</span>
             <div class="text-center">
-              <button type="button" class="btn btn-primary btn-lg">SIGN UP TODAY</button>
+              <form name="signup" action="/auth/signUp" method="post">
+                username: <input name="username" id="username" style="color: black;" /><br />
+                password: <input type="password" name="password" id="password" style="color: black;" /><br />
+                <input type="submit" value="SIGN UP TODAY" class="btn btn-primary btn-lg"></input>
+              </form>
             </div>
             <p>Tickets are selling fast
               get yours today and be
