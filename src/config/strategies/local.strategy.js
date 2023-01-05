@@ -1,11 +1,11 @@
 import passport from 'passport'
 import { Strategy } from 'passport-local'
-import pkg from 'mongodb';
-const { MongoClient, ObjectID } = pkg;
+import mongodb from 'mongodb';
+const { MongoClient, ObjectID } = mongodb;
 import Debug from 'debug'
 const debug = Debug('app:localStrategy')
 
-export function localStrategy () {
+export default function localStrategy () {
   passport.use(
     new Strategy(
       {

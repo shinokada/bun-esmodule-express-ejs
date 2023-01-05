@@ -1,9 +1,7 @@
-import passport from 'passport'
-import localStrategy from './strategies/local.strategy.js'
+import passport from 'passport';
+import './strategies/local.strategy.js';
 
-localStrategy()
-
-export function passportConfig (app) {
+export default function passportConfig (app) {
   app.use(passport.initialize());
   app.use(passport.session());
 
@@ -14,4 +12,4 @@ export function passportConfig (app) {
   passport.deserializeUser((user, done) => {
     done(null, user);
   });
-};
+}

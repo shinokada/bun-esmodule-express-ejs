@@ -1,10 +1,9 @@
 import express from 'express'
 import Debug from 'debug'
-import pkg from 'mongodb';
-const { MongoClient, ObjectID } = pkg;
+import mongodb from 'mongodb';
+const { MongoClient, ObjectID } = mongodb;
 
 const authRouter = express.Router()
-
 
 authRouter.route('/signUp').post((req, res) => {
   // TODO create user
@@ -17,4 +16,4 @@ authRouter.route('/profile').get((req, res) => {
   res.json(req.user)
 })
 
-export { authRouter }
+export default authRouter 
