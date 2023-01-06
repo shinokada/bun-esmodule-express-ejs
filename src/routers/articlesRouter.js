@@ -7,16 +7,23 @@ const { MongoClient, ObjectID } = mongodb;
 
 const debug = Debug('app:adminRouter')
 const articlesRouter = express.Router()
-const username = process.env.USERNAME
-const password = process.env.PASSWORD
-const cluster = process.env.CLUSTERNAME
+articlesRouter.use((req, res, next) => {
+  if (req.user) {
+    next();
+  } else {
+    res.redirect('/auth/signIn');
+  }
+});
+
+const dbName = 'demo1'
+const url = `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@${process.env.CLUSTERNAME}.sabpl.mongodb.net/?retryWrites=true&w=majority`
 
 articlesRouter.route('/').get(async (req, res) => {
   // res.render('articles', {
   //   articles,
   // })
   const dbName = 'demo1'
-  const url = `mongodb+srv://${username}:${password}@${cluster}.sabpl.mongodb.net/?retryWrites=true&w=majority`
+  const url = `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@${process.env.CLUSTERNAME}.sabpl.mongodb.net/?retryWrites=true&w=majority`
 
   debug('Connecting DB ...')
   const client = await MongoClient.connect(url)
@@ -38,8 +45,8 @@ articlesRouter.route('/:id').get(async (req, res) => {
   // res.render('article', {
   //   article: articles[id]
   // })
-  const dbName = 'demo1'
-  const url = `mongodb+srv://${username}:${password}@${cluster}.sabpl.mongodb.net/?retryWrites=true&w=majority`
+  // const dbName = 'demo1'
+  // const url = `mongodb+srv://${username}:${password}@${cluster}.sabpl.mongodb.net/?retryWrites=true&w=majority`
 
   debug('Connecting DB ...')
   const client = await MongoClient.connect(url)

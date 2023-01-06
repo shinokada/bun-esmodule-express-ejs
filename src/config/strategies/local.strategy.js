@@ -1,9 +1,12 @@
 import passport from 'passport'
 import { Strategy } from 'passport-local'
 import mongodb from 'mongodb';
-const { MongoClient, ObjectID } = mongodb;
+const { MongoClient } = mongodb;
 import Debug from 'debug'
 const debug = Debug('app:localStrategy')
+
+const dbName = 'demo1'
+const url = `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@${process.env.CLUSTERNAME}.sabpl.mongodb.net/?retryWrites=true&w=majority`
 
 export default function localStrategy () {
   passport.use(
@@ -13,31 +16,30 @@ export default function localStrategy () {
         passwordField: 'password',
       },
       (username, password, done) => {
-        const user = { username, password, 'name': 'Jonathan' }
-        done(null, user)
-        // const url =
-        //   'mongodb+srv://dbUser:1R7jzwoc2WuKOK4U@globomantics.o6s8j.mongodb.net?retryWrites=true&w=majority';
-        // const dbName = 'globomantics';
-        // (async function validateUser () {
-        //   let client;
-        //   try {
-        //     client = await MongoClient.connect(url);
-        //     debug('Connected to the mongo DB');
+        // const user = { username, password, name: 'Jonathan' }
 
-        //     const db = client.db(dbName);
+        // console.log('process.env.USERNAME: ', process.env.PASSWORD, process.env.USERNAME)
+        // done(null, user)
 
-        //     const user = await db.collection('users').findOne({ username });
+        (async function validateUser () {
+          let client
+          try {
+            client = await MongoClient.connect(url)
+            debug('Connected to the mongo DB');
+            const db = client.db(dbName)
 
-        //     if (user && user.password === password) {
-        //       done(null, user);
-        //     } else {
-        //       done(null, false);
-        //     }
-        //   } catch (error) {
-        //     done(error, false);
-        //   }
-        //   client.close();
-        // })();
+            const user = await db.collection('users').findOne({ username });
+
+            if (user && user.password === password) {
+              done(null, user);
+            } else {
+              done(null, false);
+            }
+          } catch (error) {
+            done(error, false);
+          }
+          client.close();
+        })();
       }
     )
   );
