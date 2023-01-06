@@ -2,6 +2,7 @@ import express from 'express'
 import Debug from 'debug'
 import mongodb from 'mongodb';
 import speakerService from '../services/speakerService.js';
+// don't forget to run it
 const service = speakerService();
 
 const { MongoClient, ObjectID } = mongodb;
