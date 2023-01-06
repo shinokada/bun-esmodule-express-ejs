@@ -1,7 +1,11 @@
 import express from 'express'
 import Debug from 'debug'
 import mongodb from 'mongodb';
+import speakerService from '../services/speakerService.js';
+const service = speakerService();
+
 const { MongoClient, ObjectID } = mongodb;
+
 // you need to add assert { type: "json" } to import JSON in ES modules
 // import articles from '../data/mydata.json' assert { type: "json" }
 
@@ -22,8 +26,8 @@ articlesRouter.route('/').get(async (req, res) => {
   // res.render('articles', {
   //   articles,
   // })
-  const dbName = 'demo1'
-  const url = `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@${process.env.CLUSTERNAME}.sabpl.mongodb.net/?retryWrites=true&w=majority`
+  // const dbName = 'demo1'
+  // const url = `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@${process.env.CLUSTERNAME}.sabpl.mongodb.net/?retryWrites=true&w=majority`
 
   debug('Connecting DB ...')
   const client = await MongoClient.connect(url)
@@ -54,8 +58,20 @@ articlesRouter.route('/:id').get(async (req, res) => {
   const collection = db.collection('articles')
 
   try {
-    const article = await collection.findOne({ _id: new ObjectID(id) })
-    res.render('article', { article })
+    // const article = await collection.findOne({ _id: new ObjectID(id) })
+    // res.render('article', { article })
+    const session = await db
+      .collection('articles')
+      .findOne({ _id: new ObjectID(id) });
+    // console.log('session: ', session)
+    const speaker = await service.getSpeakerById(
+      session.speakers[0].id
+    );
+
+    session.speaker = speaker.data;
+    res.render('session', {
+      session,
+    });
   } catch (error) {
     debug('error', error)
   } finally {
