@@ -11,7 +11,7 @@ import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-d
 dotenv.config()
 
 const debug = Debug('app:adminRouter')
-const adminRouter = express.Router()
+const feedRouter = express.Router()
 
 // mongoose.set('strictQuery', true);
 
@@ -19,7 +19,7 @@ const username = process.env.USERNAME
 const password = process.env.PASSWORD
 const cluster = process.env.CLUSTERNAME
 
-adminRouter.route('/').get(async (req, res) => {
+feedRouter.route('/').get(async (req, res) => {
   const dbName = 'demo1'
   const url = `mongodb+srv://${username}:${password}@${cluster}.sabpl.mongodb.net/?retryWrites=true&w=majority`
 
@@ -29,6 +29,7 @@ adminRouter.route('/').get(async (req, res) => {
   const collection = db.collection('articles')
 
   try {
+    debug("Inserting")
     const response = await collection.insertMany(articles)
     debug("Data inserted")
     res.json(response)
@@ -39,4 +40,4 @@ adminRouter.route('/').get(async (req, res) => {
   }
 })
 
-export { adminRouter }
+export { feedRouter }

@@ -10,7 +10,7 @@ const debug = Debug('app')
 const PORT = process.env.PORT || 3000;
 
 import { articlesRouter } from './src/routers/articlesRouter.js'
-import { adminRouter } from './src/routers/adminRouter.js'
+import { feedRouter } from './src/routers/feedRouter.js'
 
 // middleware
 app.use(morgan('tiny')) // or combined
@@ -28,7 +28,7 @@ app.set('views', './src/views')
 app.set('view engine', 'ejs')
 
 app.use('/articles', articlesRouter)
-app.use('/admin', adminRouter)
+app.use('/feed', feedRouter)
 
 app.get('/', (req, res) => {
   res.render('index', { title: 'Bun, EJS and ExpressJS', data: ['a', 'b', 'c'] })
