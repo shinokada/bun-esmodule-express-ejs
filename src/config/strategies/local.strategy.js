@@ -4,6 +4,8 @@ import mongodb from 'mongodb';
 const { MongoClient } = mongodb;
 import Debug from 'debug'
 const debug = Debug('app:localStrategy')
+import * as dotenv from 'dotenv'
+dotenv.config()
 
 const dbName = 'demo1'
 const url = `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@${process.env.CLUSTERNAME}.sabpl.mongodb.net/?retryWrites=true&w=majority`

@@ -34,7 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
-app.use(session({ secret }))
+app.use(session({ secret: secret }))
 // must import and initialize after cookieParser and session
 import passportConfig from './src/config/passport.js'
 passportConfig(app)

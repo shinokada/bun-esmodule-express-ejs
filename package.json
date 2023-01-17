@@ -32,5 +32,8 @@
     "env": {
       "PORT": 4000
     }
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.3"
   }
 }
